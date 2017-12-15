@@ -1,6 +1,6 @@
 extern crate nalgebra;
 
-use nalgebra::{Vector3,Norm,Cross,Dot};
+use nalgebra::{Vector3};
 use std::collections::HashMap;
 use std::io::prelude::*;
 use std::fs::File;

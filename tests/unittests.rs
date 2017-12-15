@@ -1,7 +1,7 @@
 extern crate isosurface;
 extern crate nalgebra;
 use isosurface::*;
-use nalgebra::{Point3,Vector3,Norm};
+use nalgebra::{Vector3};
 use std::cmp::{Ordering,PartialOrd};
 
 fn partial_max<T:PartialOrd+Copy>(v:&Vec<T>)->Option<T>{
@@ -27,10 +27,10 @@ fn partial_max<T:PartialOrd+Copy>(v:&Vec<T>)->Option<T>{
 #[test]
 fn test_basis_grid(){
     let g = Grid::new_box_basis_grid(
-        Vector3{x:0.,y:0.,z:0.},
-        Vector3{x:1.,y:0.,z:0.},
-        Vector3{x:0.,y:1.,z:0.},
-        Vector3{x:0.,y:0.,z:1.},
+        Vector3::new(0.,0.,0.),
+        Vector3::new(1.,0.,0.),
+        Vector3::new(0.,1.,0.),
+        Vector3::new(0.,0.,1.),
         3,3,3);
     assert_eq!(g.points.len(),3*3*3);
     let i:GIndex = 0;
@@ -41,10 +41,10 @@ fn test_basis_grid(){
 #[test]
 fn test_relevant_points(){
     let g = Grid::new_box_basis_grid(
-        Vector3{ x:-1.0,y:-1.0,z:-1.0},
-        Vector3{x:0.1,y:0.0,z:0.0},
-        Vector3{x:0.0,y:0.1,z:0.0},
-        Vector3{x:0.0,y:0.0,z:0.1},
+        Vector3::new( -1.0,-1.0,-1.0),
+        Vector3::new(  0.1, 0.0, 0.0),
+        Vector3::new(  0.0, 0.1, 0.0),
+        Vector3::new(  0.0, 0.0, 0.1),
         11,11,11);
     let pv = OnTheFlyPointValues{
         points:&g.points,
@@ -60,22 +60,22 @@ fn test_relevant_points(){
 #[test]
 fn test_find_intersection() {
     let p = find_intersection(
-        Vector3 { x: 0.0, y: 0.0, z: 0.0 },
-        Vector3 { x: 10.0, y: 0.0, z: 0.0 },
+        Vector3::new(0.,0.,0.),
+        Vector3::new(10.,0.,0.),
         &|v: Point| { v.norm() - 1.0 },
         0.001,
         1e-6
     );
     //println!("inter {:?},{}",&p,p.norm());
-    assert!((p-Vector3{x:1.0,y:0.0,z:0.0}).norm()<0.001)
+    assert!((p-Vector3::new(1.,0.,0.)).norm()<0.001)
 }
 #[test]
 fn test_make_mesh() {
     let g = Grid::new_box_basis_grid(
-        Vector3{ x:-1.0,y:-1.0,z:-1.0},
-        Vector3{x:0.1,y:0.0,z:0.0},
-        Vector3{x:0.0,y:0.1,z:0.0},
-        Vector3{x:0.0,y:0.0,z:0.1},
+        Vector3::new(-1.,-1.,-1.),
+        Vector3::new(0.1,0.,0.),
+        Vector3::new(0.,0.1,0.),
+        Vector3::new(0.,0.,0.1),
         21,21,21);
     let function = |v:Point|{v.norm()-1.0};
     let pv = OnTheFlyPointValues{
